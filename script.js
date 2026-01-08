@@ -21,6 +21,19 @@ window.addEventListener('load', () => {
     parseData();
     showHighScore();
     showScreen('screen-home');
+    if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', () => {
+        const currentHeight = window.visualViewport.height;
+        const totalHeight = window.innerHeight;
+
+        if (currentHeight < totalHeight) {
+            document.body.style.height = `${currentHeight}px`;
+            document.activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            document.body.style.height = '100dvh';
+        }
+    });
+}
 });
 
 function parseData() {
