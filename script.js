@@ -22,13 +22,6 @@ window.addEventListener('load', () => {
     showHighScore();
     showScreen('screen-home');
     const inputField = document.getElementById('et-answer');
-
-    inputField.addEventListener('focus', () => {
-        // 0.3초 정도 딜레이를 주어 키보드가 다 올라온 뒤에 실행
-        setTimeout(() => {
-            inputField.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 300);
-    });
 });
 
 function parseData() {
