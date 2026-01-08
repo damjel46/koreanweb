@@ -1,12 +1,3 @@
-const CSV_CONTENT = `initial|word|mean|example
-ㄱㅊ|각출|금품을 나누어 냄|회식비를 각자 ___하여 계산했다
-ㄱㄱ|간과|큰 관심 없이 대강 보아 넘김|작은 실수라고 ___했다가는 큰 사고로 이어질 수 있다
-ㄱㄷ|갈등|개인이나 집단 사이에 이해관계가 달라 충돌함|노사 간의 ___이 깊어지고 있다
-ㄱㅇ|감안|여러 사정을 참고하여 생각함|물가 상승률을 ___하여 연봉을 조정했다
-ㄱㄱ|강구|좋은 대책과 방법을 궁리하여 찾아냄|문제 해결을 위한 대책을 조속히 ___해야 한다
-ㄱㅅ|갱신|이미 있던 것을 고쳐 새롭게 함|운전면허증 ___ 기간이 다가왔다
-ㄱㅊ|격차|빈부, 임금, 기술 수준 따위가 서로 벌어진 차이|소득 ___가 점점 벌어지고 있다`;
-
 let allWords = [];
 let quizQueue = [];
 let currentItem = null;
@@ -17,20 +8,22 @@ let mode = 'study';
 let isHintUsed = false;
 let isAnswerUsed = false;
 
-window.addEventListener('load', () => {
-    parseData();
+window.addEventListener('load', async () => {
+    await loadData();
     showHighScore();
     showScreen('screen-home');
     const inputField = document.getElementById('et-answer');
 });
 
-function parseData() {
-    const lines = CSV_CONTENT.trim().split('\n');
-    for (let i = 1; i < lines.length; i++) {
-        const row = lines[i].split('|');
-        if (row.length === 4) {
-            allWords.push({ initial: row[0], word: row[1], mean: row[2], example: row[3] });
-        }
+async function loadData() {
+    try {
+        const response = await fetch('./data.json'); 
+        if (!response.ok) throw new Error('데이터 로드 실패');
+        
+        allWords = await response.json();
+    } catch (error) {
+        console.error("에러:", error);
+        alert("단어 데이터를 가져오지 못했습니다.");
     }
 }
 
@@ -41,7 +34,7 @@ function startGame(selectedMode, seconds = 0) {
     document.getElementById('score-display').innerText = score;
 
     // 데이터 셔플
-    quizQueue = [...allWords].sort(() => Math.random() - 0.5);
+    quizQueue = shuffle(allWords);
 
     // 모드 설정
     if (mode === 'challenge') {
@@ -119,6 +112,14 @@ function nextQuestion() {
     document.getElementById('feedback-msg').innerText = '';
     document.getElementById('quiz-card').classList.remove('shake-anim');
 
+}
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]]; 
+    }
+    return array;
 }
 
 function checkAnswer() {
