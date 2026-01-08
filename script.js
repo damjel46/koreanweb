@@ -21,19 +21,14 @@ window.addEventListener('load', () => {
     parseData();
     showHighScore();
     showScreen('screen-home');
-    if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', () => {
-        const currentHeight = window.visualViewport.height;
-        const totalHeight = window.innerHeight;
+    const inputField = document.getElementById('et-answer');
 
-        if (currentHeight < totalHeight) {
-            document.body.style.height = `${currentHeight}px`;
-            document.activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        } else {
-            document.body.style.height = '100dvh';
-        }
+    inputField.addEventListener('focus', () => {
+        // 0.3초 정도 딜레이를 주어 키보드가 다 올라온 뒤에 실행
+        setTimeout(() => {
+            inputField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
     });
-}
 });
 
 function parseData() {
