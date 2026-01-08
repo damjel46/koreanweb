@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문해력 퀴즈 (Korean Literacy Quiz)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="main-wrapper">
+        <div class="container h-100">
+            <div id="main-row" class="row h-100 align-items-center justify-content-center flex-nowrap">
+                <div id="sidebar-col" class="col-lg-5 d-none d-lg-block fade-col">
+                    <div class="pc-sidebar text-white">
+                        <h1 class="display-3 fw-black">문해력<br>퀴즈</h1>
+                        <p class="lead mt-3">당신의 어휘력을 테스트하고<br>전 세계 유저들과 경쟁하세요!</p>
+                        <div class="mt-5 glass-box p-4">
+                            <h4>🏆 명예의 전당</h4>
+                            <p class="mb-0 fs-5" id="pc-best-score">나의 최고 기록: 0점</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="app-col"
+                    class="col-lg-5 col-md-8 col-12 d-flex align-items-center justify-content-center expand-col ">
+                    <div class="app-container w-100 shadow-lg h-75">
+
+                        <div id="screen-home"
+                            class="screen active text-center d-flex flex-column justify-content-center h-100 py-5">
+                            <div class="d-lg-none mb-4">
+                                <h1 class="text-primary fw-bold display-4">문해력 퀴즈</h1>
+                                <p class="text-secondary">당신의 어휘력을 테스트해보세요!</p>
+                            </div>
+
+                            <div class="menu-buttons d-grid gap-3 col-10 col-lg-8 mx-auto">
+                                <button class="btn btn-outline-primary btn-lg py-4 shadow-sm fw-bold hover-scale"
+                                    onclick="startGame('study')">
+                                    <span class="fs-4">📖</span> 공부 모드
+                                </button>
+                                <button class="btn btn-warning btn-lg text-white py-4 shadow-sm fw-bold hover-scale"
+                                    onclick="startGame('challenge', 60)">
+                                    <span class="fs-4">⚡</span> 1분 도전
+                                </button>
+                                <button class="btn btn-danger btn-lg py-4 shadow-sm fw-bold hover-scale"
+                                    onclick="startGame('challenge', 180)">
+                                    <span class="fs-4">🔥</span> 3분 도전
+                                </button>
+                            </div>
+
+                            <div class="mt-5 d-lg-none">
+                                <span class="badge bg-light text-dark border p-2 fs-6" id="mobile-best-score">최고 기록:
+                                    0점</span>
+                            </div>
+                        </div>
+
+                        <div id="screen-game" class="screen h-100 flex-column  d-none">
+                            <div class="d-flex justify-content-between align-items-center mb-4 px-2 position-relative">
+
+                                <button class="btn btn-light btn-sm rounded-pill px-3 fw-bold d-lg-block d-none" id="back"
+                                    onclick="goHome()">◀ 나가기</button>
+                                <button class="btn btn-light btn-sm rounded-pill px-3 fw-bold d-lg-none d-block" id="back"
+                                    onclick="goHome()">◀</button>
+
+                                <div class="text-center position-absolute start-50 translate-middle-x">
+                                    <span class="badge bg-danger rounded-pill px-3 py-2" id="timer-badge">
+                                        <span id="timer-label">TIME</span>
+                                        <span id="timer-display" class="ms-1 font-monospace">00:00</span>
+                                    </span>
+                                </div>
+
+                                <div class="text-center">
+                                    <div style="font-size: 0.7rem; color:#999; font-weight:700;">SCORE</div>
+                                    <div class="fw-black text-primary fs-4 lh-1"><span id="score-display">0</span></div>
+                                </div>
+
+                            </div>
+                            <div id="feedback-msg" class="text-center fw-bold mb-3 feedback-area"
+                                style="min-height: 24px;"></div>
+
+                            <div id="quiz-card"
+                                class="card border-0 rounded-4 p-4 mb-3 text-center flex-grow-1 d-flex flex-column justify-content-center align-items-center">
+                                <div class="initial-text mb-2" id="tv-initial">--</div>
+                                <p class="fs-4 fw-bold text-dark mb-3 word-break" id="tv-mean">문제를 불러오는 중...</p>
+
+                                <div id="tv-example-box" class="example-box text-center w-auto">
+                                    <span id="tv-example" class="text-dark fs-4"></span>
+                                </div>
+
+                                <div class="input-group input-group-lg mt-2 flex-nowrap" id="submit">
+                                    <input type="text" id="et-answer"
+                                        class="form-control text-center rounded-start-pill border-primary"
+                                        placeholder="정답 입력" autocomplete="off">
+                                    <button class="btn btn-primary rounded-end-pill px-4 fw-bold"
+                                        onclick="checkAnswer()">제출</button>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-2 mt-2">
+                                <button class="btn btn-outline-secondary flex-grow-1 py-3 rounded-4 fw-bold"
+                                    onclick="showHint()">힌트 보기</button>
+                                <button id="btn-pass"
+                                    class="btn btn-warning text-white flex-grow-1 py-3 rounded-4 fw-bold"
+                                    onclick="passQuestion()">PASS</button>
+                            </div>
+                        </div>
+
+                        <div id="screen-result"
+                            class="screen text-center d-none flex-column justify-content-center h-100">
+                            <div class="mb-4">
+                                <span style="font-size: 4rem;">🏆</span>
+                            </div>
+                            <h2 class="text-secondary mb-2 fw-bold">Game Over</h2>
+                            <h1 class="display-1 fw-black text-primary mb-2"><span id="final-score">0</span>점</h1>
+                            <p class="lead mb-5 fw-bold text-dark" id="result-msg">수고하셨습니다!</p>
+
+                            <div class="d-grid gap-3 col-8 mx-auto">
+                                <button class="btn btn-primary btn-lg rounded-pill shadow fw-bold py-3 hover-scale"
+                                    onclick="goHome()">메인으로</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

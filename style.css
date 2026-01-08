@@ -1,0 +1,198 @@
+:root {
+    --primary-color: #6f42c1;
+    --bg-mobile: #f8f9fa;
+    --bg-pc: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+body {
+    background: var(--bg-mobile);
+    font-family: 'Noto Sans KR', sans-serif;
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* === 메인 레이아웃 및 애니메이션 === */
+.main-wrapper {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+#et-answer::placeholder {
+    opacity: 25%;
+}
+
+/* 전환 효과를 위한 설정 */
+#sidebar-col {
+    flex: 0 0 auto;
+    width: calc(100% - 550px);
+    opacity: 1;
+    overflow: hidden;
+    transition:
+        width 0.3s ease 0.2s,
+        opacity 0.3s ease 0.3s;
+}
+
+#app-col {
+    flex: 0 0 auto;
+    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.app-container {
+    background-color: white;
+    width: 100%;
+    height: calc(100vh - 80px);
+    border-radius: 30px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    padding: 30px;
+    flex-direction: column;
+}
+
+.game-mode .app-container {
+    align-items: center;
+    text-align: center;
+}
+
+/* 1. 왼쪽 사이드바 숨기기 */
+.game-mode #sidebar-col {
+    flex: 0 0 0% !important;
+    width: 0 !important;
+    padding: 0 !important;
+    opacity: 0;
+    overflow: hidden;
+    transition:
+        width 0.3s ease 0s,
+        opacity 0.3s ease 0s;
+}
+
+/* 2. 앱 컨테이너 확장하기 */
+.game-mode #app-col {
+    width: 100% !important;
+    max-width: 100% !important;
+    transition: width 0.3s ease 0.3s;
+}
+
+/* 화면 전환 (페이드 효과) */
+.screen {
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+    display: none !important;
+    height: 100%;
+    width: 100%;
+}
+
+.screen.active {
+    display: flex !important;
+    opacity: 1;
+}
+
+
+/* 폰트 굵기 유틸리티 */
+.fw-black {
+    font-weight: 900;
+}
+
+/* 퀴즈 텍스트 */
+.initial-text {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--primary-color);
+    line-height: 1.2;
+}
+
+/* 버튼 호버 효과 */
+.hover-scale {
+    transition: transform 0.2s;
+}
+
+.hover-scale:hover {
+    transform: scale(1.03);
+}
+
+/* 예문 박스 */
+.example-box {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #e9ecef;
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    display: none;
+    border-left: 5px solid var(--primary-color);
+}
+
+/* 오답 흔들림 효과 */
+.shake-anim {
+    animation: shake 0.4s;
+    background-color: #fff0f0 !important;
+}
+
+.shake-anim-solution {
+    animation: shake 0.4s;
+    background-color: #f0fff4 !important;
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
+
+    75% {
+        transform: translateX(-5px);
+    }
+}
+
+
+/* PC 환경 전용 스타일 */
+@media (min-width: 992px) {
+    body {
+        background: var(--bg-pc);
+    }
+
+    .pc-sidebar {
+        padding-right: 40px;
+    }
+
+    .glass-box {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+    }
+
+    #submit {
+        width: 75%;
+    }
+}
+
+/* 모바일 환경 전용 스타일 */
+@media (max-width: 991.98px) {
+    .app-container {
+        height: 100vh;
+        max-height: none;
+        border-radius: 0;
+        padding: 20px;
+        margin-bottom: 55%;
+    }
+    
+
+    .game-mode #app-col {
+        max-width: 100% !important;
+    }
+
+    #submit {
+        width: 85%;
+    }
+}
